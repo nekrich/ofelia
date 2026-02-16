@@ -110,14 +110,16 @@ func TestGetDockerLabels_ContainerNameEmpty(t *testing.T) {
 	mockProvider := &mockDockerProviderForHandler{
 		containers: []domain.Container{
 			{
-				Name: "", // empty name
+				Name:  "", // empty name
+				State: domain.ContainerState{Running: true},
 				Labels: map[string]string{
 					"ofelia.enabled":              "true",
 					"ofelia.job-run.foo.schedule": "@daily",
 				},
 			},
 			{
-				Name: "valid-container",
+				Name:  "valid-container",
+				State: domain.ContainerState{Running: true},
 				Labels: map[string]string{
 					"ofelia.enabled":              "true",
 					"ofelia.job-run.bar.schedule": "@hourly",
@@ -154,10 +156,12 @@ func TestGetDockerLabels_ContainerNoLabels(t *testing.T) {
 		containers: []domain.Container{
 			{
 				Name:   "no-labels",
+				State:  domain.ContainerState{Running: true},
 				Labels: map[string]string{}, // empty labels
 			},
 			{
-				Name: "has-labels",
+				Name:  "has-labels",
+				State: domain.ContainerState{Running: true},
 				Labels: map[string]string{
 					"ofelia.enabled":              "true",
 					"ofelia.job-run.baz.schedule": "@daily",
@@ -192,7 +196,8 @@ func TestGetDockerLabels_OnlyNonOfeliaLabels(t *testing.T) {
 	mockProvider := &mockDockerProviderForHandler{
 		containers: []domain.Container{
 			{
-				Name: "non-ofelia",
+				Name:  "non-ofelia",
+				State: domain.ContainerState{Running: true},
 				Labels: map[string]string{
 					"app":     "myapp",
 					"version": "1.0",
@@ -222,7 +227,8 @@ func TestGetDockerLabels_MixedLabels(t *testing.T) {
 	mockProvider := &mockDockerProviderForHandler{
 		containers: []domain.Container{
 			{
-				Name: "mixed",
+				Name:  "mixed",
+				State: domain.ContainerState{Running: true},
 				Labels: map[string]string{
 					"ofelia.enabled":             "true",
 					"ofelia.job-run.x.schedule":  "@daily",
@@ -259,7 +265,8 @@ func TestGetDockerLabels_FilterMerging(t *testing.T) {
 	mockProvider := &mockDockerProviderForHandler{
 		containers: []domain.Container{
 			{
-				Name: "filtered",
+				Name:  "filtered",
+				State: domain.ContainerState{Running: true},
 				Labels: map[string]string{
 					"ofelia.enabled": "true",
 				},
